@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Guillaume!{% endblock %}
+
+{% block body %}
+<div class="container mx-auto p-5">
+    <h3>Bonjour {{ prenom }} !</h3>
+    <p>Vous avez {{age}} ans.</p>
+
+
+    {% for possession in possessions %}
+    <p>{{ possession }}</p>
+    {% else %}
+    <p>Tu n'as pas de possession.</p>
+    {% endfor %}
+
+    {% for possession in possessions2 %}
+    <p>{{ possession }}</p>
+    {% else %}
+    <p>Tu n'as pas de possession2.</p>
+    {% endfor %}
+
+    {% if possessions2|length is same as (0) %}
+    <p>Tu n'as pas de possession2.</p>
+    {% endif %}
+
+    <a href="{{ path('other_page', { nom: 'Martin', prenom: 'Martine' }) }}">Mon autre page</a>
+
+
+</div>
+{% endblock %}

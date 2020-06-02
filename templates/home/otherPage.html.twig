@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title%}Mon titre de page{% endblock %}
+
+{% block body %}
+<h1>Mon autre page</h1>
+<a href="{{ path('home') }}">Home</a>
+<p>{{ welcome }}</p>
+{% endblock %}

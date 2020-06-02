@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Blog{% endblock %}
+
+{% block body %}
+
+{% for post in posts %}
+    <p>{{ post.title }}</p>
+    <p>{{ post.createdAt | date('d.m.Y') }}</p>
+    <p>{{ post.content }}</p>
+    <hr>
+{% endfor %}
+
+{% endblock %}
