@@ -4,11 +4,22 @@
 
 {% block body %}
 
-{% for post in posts %}
-    <p>{{ post.title }}</p>
-    <p>{{ post.createdAt | date('d.m.Y') }}</p>
-    <p>{{ post.content }}</p>
-    <hr>
+<div class="row">
+{% for post in posts %} 
+    <article class="col-6">
+        <h2>{{ post.title }}</h2>
+        <small>{{ post.createdAt | date('d.m.Y') }}</small>
+        <p>{{ post.content[:50] }}...</p> 
+        {# équivalent à {{ post.content|slice(1, 180) }} #}
+        <a href="{{ path('read_post', { id: post.id }) }}" title="Lire la suite de l'article">Aller à la page de l'article</a>
+    </article>
 {% endfor %}
+
+    <div class="py-5">
+    {{ knp_pagination_render(posts) }}
+    </div>
+</div>
+
+
 
 {% endblock %}

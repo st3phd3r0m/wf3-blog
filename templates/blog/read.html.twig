@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon article {{ post.id }}{% endblock %}
+
+{% block body %}
+
+{% for message in app.flashes('success') %}
+<div class="alert alert-success" role="alert">{{ message }}</div>
+{% endfor %}
+
+<h1>{{ post.title }}</h1>
+<small>Posté le {{ post.createdAt | date('d.m.Y') }}</small>
+<p>{{ post.content }}</p>
+<a href="{{ path('blog') }}">Retour à la liste des articles</a>
+
+<h2>Commentaires</h2>
+{% for comment in post.comments|sort((a, b) => a.createdAt > b.createdAt) %}
+    <div>
+        <small>Commentaire posté le {{ comment.createdAt | date('d.m.Y') }}</small>
+        <p>{{ comment.comment }}</p> 
+    </div>
+    <hr>
+{% endfor %}
+
+<h3>Postez votre commentaire</h3>
+{{ form(formComment) }}
+
+{% endblock %}
