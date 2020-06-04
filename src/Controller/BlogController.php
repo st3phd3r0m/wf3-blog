@@ -14,6 +14,31 @@ class BlogController extends AbstractController
 {
 
     /**
+     * @Route("/categorie/{id}", name="read_categorie", requirements={"id"="\d+"})
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
+    public function pageCategorie(int $id, PaginatorInterface $paginator, Request $request)
+    {
+
+        $posts = $paginator->paginate(
+            //Selectionne toutes les données de la table "posts"
+            //getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
+            $this->getDoctrine()->getRepository(Posts::class)->findBy(['categorie'=>$id], ['created_at' => 'DESC']),
+            //Le numero de la page, si aucun numero, on force la page 1
+            $request->query->getInt('page', 1),
+            //Nombre d'élément par page
+            4
+        );
+
+        return $this->render('blog/categorie.html.twig', [
+            'posts'=>$posts
+        ]);
+    }
+
+
+    /**
      * @Route("/post/{id}", name="read_post", requirements={"id"="\d+"})
      * @param int $id
      * @param Request $request
@@ -78,7 +103,7 @@ class BlogController extends AbstractController
         $posts = $paginator->paginate(
             //Selectionne toutes les données de la table "posts"
             //getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
-            $this->getDoctrine()->getRepository(Posts::class)->findBy([], ['created_at'=>'DESC']),
+            $this->getDoctrine()->getRepository(Posts::class)->findBy([], ['created_at' => 'DESC']),
             //Le numero de la page, si aucun numero, on force la page 1
             $request->query->getInt('page', 1),
             //Nombre d'élément par page

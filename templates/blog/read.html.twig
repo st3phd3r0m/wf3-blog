@@ -9,7 +9,12 @@
 {% endfor %}
 
 <h1>{{ post.title }}</h1>
-<small>Posté le {{ post.createdAt | date('d.m.Y') }}</small>
+<small>Posté le {{ post.createdAt | date('d.m.Y') }}. - Catégorie : <a href="{{ path('read_categorie', { id : post.categorie.id }) }}">{{ post.categorie.name }}</a></small>
+
+{% if post.image is not empty %}
+<img class="d-block w-75 p-3" src="{{ asset('images/posts/'~ post.image ) }}" alt="{{ post.title }}">
+{% endif %}
+
 <p>{{ post.content }}</p>
 <a href="{{ path('blog') }}">Retour à la liste des articles</a>
 

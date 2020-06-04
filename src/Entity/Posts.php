@@ -59,10 +59,11 @@ class Posts
      */
     private $updated_at;
 
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $categorie;
 
     public function getId(): ?int
     {
@@ -173,4 +174,17 @@ class Posts
 
         return $this;
     }
+
+    public function getCategorie(): ?Categories
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categories $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
 }

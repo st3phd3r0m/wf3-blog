@@ -29,8 +29,11 @@ class PostsFixtures extends Fixture implements OrderedFixtureInterface
             //Récupération d'une image aléatoire
             $image = $faker->picsum('public/images/posts');
 
+            $categorie = $this->getReference('categorie_'.rand(0, 10));
+
             //Création d'un post
             $post = new Posts;
+            $post->setCategorie($categorie);
             $post->setTitle($faker->realText(80));
             $post->setContent($faker->paragraph(20));
             $post->setCreatedAt($faker->dateTimeBetween('-3 years', 'now'));
@@ -42,6 +45,7 @@ class PostsFixtures extends Fixture implements OrderedFixtureInterface
 
             //Création d'une référence (une sorte de variable globale accessible uniquement par une fixture) afin de l'utiliser dans une autre fixture
             $this->addReference('post_'.$i, $post);
+            
         }
 
         $manager->flush();
@@ -50,6 +54,6 @@ class PostsFixtures extends Fixture implements OrderedFixtureInterface
     public function getOrder()
     {
         //PostsFixtures est le 1er à etre executé
-        return 1;
+        return 2;
     }
 }

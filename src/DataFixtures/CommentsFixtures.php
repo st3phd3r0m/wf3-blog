@@ -37,6 +37,6 @@ class CommentsFixtures extends Fixture implements OrderedFixtureInterface
     public function getOrder()
     {
         //CommentsFixtures est le 2em à etre executé
-        return 2;
+        return 3;
     }
 }
