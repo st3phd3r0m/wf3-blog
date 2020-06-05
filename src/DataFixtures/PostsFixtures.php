@@ -53,7 +53,7 @@ class PostsFixtures extends Fixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        //PostsFixtures est le 1er à etre executé
-        return 2;
+        //PostsFixtures est le 3em à etre executé
+        return 3;
     }
 }

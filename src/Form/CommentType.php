@@ -18,8 +18,8 @@ class CommentType extends AbstractType
         $builder
             ->add('comment', TextareaType::class, [
                 'required'=>true,
-                'label'=>'Ecrivez votre commentaire',
-                // 'placeholder'=>'Votre commentaire',
+                'label'=>'Ecrivez votre commentaire ',
+                // 'placeholder'=>'Votre commentaire', //ne fonctionne pas
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Vous devez saisir un commentaire'

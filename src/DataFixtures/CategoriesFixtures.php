@@ -34,7 +34,7 @@ class CategoriesFixtures extends Fixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        //PostsFixtures est le 1er à etre executé
+        //CategoriesFixtures est le 1er à etre executé
         return 1;
     }
 }

@@ -26,6 +26,7 @@ class Categories
 
     /**
      * @ORM\OneToMany(targetEntity=Posts::class, mappedBy="categorie")
+     * @ORM\OrderBy({"created_at"="DESC"})
      */
     private $posts;
 

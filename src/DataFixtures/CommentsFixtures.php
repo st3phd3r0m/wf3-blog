@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 
-//implements OrderedFixtureInterface permet de charger une fixture comme PostsFixtures en priorité
+//implements OrderedFixtureInterface permet de charger une fixture comme CommentsFixtures en priorité
 class CommentsFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
@@ -23,9 +23,13 @@ class CommentsFixtures extends Fixture implements OrderedFixtureInterface
             //Récupère une référence (créée dans PostsFixtures) selon une clé
             $post = $this->getReference('post_'.rand(0, 50));
 
+            //Récupère une référence (créée dans UsersFixtures) selon une clé
+            $user = $this->getReference('user_'.rand(0, 10));
+
             $comment = new Comments;
             $comment->setComment($faker->realText());
             $comment->setPost($post);
+            $comment->setUser($user);
             $comment->setCreatedAt($faker->dateTimeBetween('-3 years', 'now'));
             
             $manager->persist($comment);
@@ -36,7 +40,7 @@ class CommentsFixtures extends Fixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        //CommentsFixtures est le 2em à etre executé
-        return 3;
+        //CommentsFixtures est le 4em à etre executé
+        return 4;
     }
 }
