@@ -3,6 +3,6 @@ vich_uploader:
 
     mappings:
         posts_images:
-            uri_prefix: /images/posts
+            uri_prefix: '/blog/public%app.path.images%'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
-            upload_destination: '%kernel.project_dir%/public/images/posts'
+            upload_destination: '%kernel.project_dir%/public%app.path.images%'

@@ -29,10 +29,10 @@
             <th scope="row">{{ post.id }}</th>    
             <td>{{ post.title }}</td>
             {# | imagine_filter('miniatures') #}
-            {# asset('images/posts/'~ post.image ) #}
+            {# asset('images/posts/'~ post.image )  class="w-100"#}
             {# vich_uploader_asset(post, 'imageFile') #}
             <td>
-                <img class="w-100" src="{{ asset('images/posts/'~ post.image ) }}" alt="Image de l'article {{ post.title }}">
+                <img class="w-100" src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Image de l'article {{ post.title }}">
             </td>
             <td>{{ post.categorie.name }}</td>    
             <td>{{ post.createdAt| date('d.m.Y') }}</td>
