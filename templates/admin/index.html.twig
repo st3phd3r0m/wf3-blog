@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titre de l'article</th>
+            <th scope="col">Image</th>
+            <th scope="col">Catégorie</th>
+            <th scope="col">Créé le</th>
+            <th scope="col">Mise à jour le</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for post in posts %} 
+        <tr>
+            <th scope="row">{{ post.id }}</th>    
+            <td>{{ post.title }}</td>
+            {# | imagine_filter('miniatures') #}
+            {# asset('images/posts/'~ post.image ) #}
+            {# vich_uploader_asset(post, 'imageFile') #}
+            <td>
+                <img class="w-100" src="{{ asset('images/posts/'~ post.image ) }}" alt="Image de l'article {{ post.title }}">
+            </td>
+            <td>{{ post.categorie.name }}</td>    
+            <td>{{ post.createdAt| date('d.m.Y') }}</td>
+            <td>{{ post.updatedAt| date('d.m.Y') }}</td>
+            <td>
+
+                <a href="{{ path('edit_Post', { id: post.id }) }}" title="Modifier l'article" class="btn btn-primary">Modifier l'article</a>
+
+                {# Passer l'url de suppression contenant l'id de l'article dans le bouton #}
+                {# et je récupère cette même url au sein de la modal qui s'ouvre #}
+                <button type="button" title="Supprimer l'article" class="btn btn-danger delete-post" data-toggle="modal" data-target="#deleteModal" data-url = "{{ path('delete_Post', { id: post.id }) }}">Supprimer l'article</button>
+            </td>
+        </tr>
+
+    {% endfor %}
+    
+        <div class="py-5">
+        {{ knp_pagination_render(posts) }}
+        </div>
+
+    </tbody>
+</table>
+
+<div class="py-5">
+{{ knp_pagination_render(posts) }}
+</div>
+
+<!-- Modal SUPRESSION-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Suppression de l'article</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous vraiment supprimer l'article ? </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <a id="confirmButton" title="Confirmer la suppression de l'article" class="btn btn-danger">Confirmer la suprression</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $("#deleteModal").on('show.bs.modal', function(event){
+
+            $(this).find('#confirmButton').attr('href', $(event.relatedTarget).data('url'));
+            
+        });
+    
+    </script>
+{% endblock %}

@@ -13,7 +13,7 @@ class UsersFixtures extends Fixture implements OrderedFixtureInterface
 {
     private $encoder;
 
-    private function __construct(UserPasswordEncoderInterface $encoder){
+    public function __construct(UserPasswordEncoderInterface $encoder){
         $this->encoder = $encoder;
     }
 
@@ -31,7 +31,7 @@ class UsersFixtures extends Fixture implements OrderedFixtureInterface
             $user->setLastname($faker->lastName);
             $user->setEmail($faker->email);
             $user->setPassword($this->encoder->encodePassword($user, 'secret'));
-            // $user->setPassword('secret');
+            //$user->setPassword('secret');
             $user->setIsVerified(1);
 
             $manager->persist($user);

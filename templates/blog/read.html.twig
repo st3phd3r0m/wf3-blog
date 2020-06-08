@@ -4,37 +4,37 @@
 
 {% block body %}
 
-{% for message in app.flashes('success') %}
-<div class="alert alert-success" role="alert">{{ message }}</div>
-{% endfor %}
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
 
-<h1>{{ post.title }}</h1>
-<small>Posté le {{ post.createdAt | date('d.m.Y') }}. - Catégorie : <a href="{{ path('read_categorie2', { id : post.categorie.id }) }}">{{ post.categorie.name }}</a></small>
+    <h1>{{ post.title }}</h1>
+    <small>Posté le {{ post.createdAt | date('d.m.Y') }}. - Catégorie : <a href="{{ path('read_categorie2', { id : post.categorie.id }) }}">{{ post.categorie.name }}</a></small>
 
-{% if post.image is not empty %}
-<img class="d-block w-75 p-3" src="{{ asset('images/posts/'~ post.image ) }}" alt="{{ post.title }}">
-{% endif %}
+    {% if post.image is not empty %}
+    <img class="d-block w-75 p-3" src="{{ asset('images/posts/'~ post.image ) }}" alt="{{ post.title }}">
+    {% endif %}
 
-<p>{{ post.content }}</p>
-<a href="{{ path('blog') }}">Retour à la liste des articles</a>
+    <p>{{ post.content }}</p>
+    <a href="{{ path('blog') }}">Retour à la liste des articles</a>
 
-<h2>Commentaires</h2>
-{% for comment in post.comments|sort((a, b) => a.createdAt > b.createdAt) %}
-    <div>
-        <small>Commentaire posté par {{ comment.user.firstname }} {{ comment.user.lastname }} le {{ comment.createdAt | date('d.m.Y') }}</small>
-        <p>{{ comment.comment }}</p> 
-    </div>
-    <hr>
-{% endfor %}
+    <h2>Commentaires</h2>
+    {% for comment in post.comments|sort((a, b) => a.createdAt > b.createdAt) %}
+        <div>
+            <small>Commentaire posté par {{ comment.user.firstname }} {{ comment.user.lastname }} le {{ comment.createdAt | date('d.m.Y') }}</small>
+            <p>{{ comment.comment }}</p> 
+        </div>
+        <hr>
+    {% endfor %}
 
- <h3>Postez votre commentaire</h3>
-{# Si l'utilisateur est connecté, on lui offre la possibilité de commenter l'article #}
-{% if app.user %}
-    <p>Postez votre commentaire {{ app.user.firstname }}</p>
-    {{ form(formComment) }}
-{% else %}
-    {# Sinon, on l'invite à se connecter ou à s'incrire #}
-    <p><a href="{{ path('app_login') }}" title="Se connecter">Connectez-vous</a> ou <a href="{{ path('app_register') }}" title="S'inscrire">inscrivez-vous</a> pour poster un commentaire.</p>
-{% endif %}
+    <h3>Postez votre commentaire</h3>
+    {# Si l'utilisateur est connecté, on lui offre la possibilité de commenter l'article #}
+    {% if app.user %}
+        <p>Postez votre commentaire {{ app.user.firstname }}</p>
+        {{ form(formComment) }}
+    {% else %}
+        {# Sinon, on l'invite à se connecter ou à s'incrire #}
+        <p><a href="{{ path('app_login') }}" title="Se connecter">Connectez-vous</a> ou <a href="{{ path('app_register') }}" title="S'inscrire">inscrivez-vous</a> pour poster un commentaire.</p>
+    {% endif %}
 
 {% endblock %}

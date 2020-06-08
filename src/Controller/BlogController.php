@@ -15,10 +15,10 @@ class BlogController extends AbstractController
 {
 
     /**
-     * @Route("/résultats-de-recherche/{id}", name="read_results", requirements={"id"="\d+"})
-     * @param string $search_str
-     * @param Request $request
-     * @return Response
+     * Route("/résultats-de-recherche/{id}", name="read_results", requirements={"id"="\d+"})
+     * param string $search_str
+     * param Request $request
+     * return Response
      */
     // public function pageResultats(string $search_str, PaginatorInterface $paginator, Request $request)
     // {
@@ -158,7 +158,6 @@ class BlogController extends AbstractController
      */
     public function index(PaginatorInterface $paginator, Request $request)
     {
-
         //Selectionne toutes les données de la table "posts"
         //getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
         // $posts = $this->getDoctrine()->getRepository(Posts::class)->findAll(),

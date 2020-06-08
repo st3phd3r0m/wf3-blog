@@ -142,7 +142,8 @@ class Posts
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    //On met un ? dans le typage pour permettre la suppression du fichier via vitch
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 
