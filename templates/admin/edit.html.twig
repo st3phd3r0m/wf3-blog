@@ -1,8 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Administration{% endblock %}
+{% block title %}Edition de l'article{% endblock %}
 
 {% block body %}
-    {{ form(editForm) }}
 
+{# on est obligé de dispatcher le formulaire pour désactiver les "required" #}
+    {{ form_start(editForm, { attr: {'novalidate': 'novalidate'}}) }}
+
+        {# {{ form_label(editForm.title) }}
+        {{ form_widget(editForm.title) }}
+        {{ form_errors(editForm.title) }} #}
+
+        {# Regroupe le label  #}
+        {# {{ form_row(editForm.title)}} #}
+
+        <div class="row">
+            <div class="col-8">
+                {# Titre de l'article #}
+                {{ form_row(editForm.title)}}
+                {# Contenu de l'article #}
+                {{ form_row(editForm.content)}}
+            </div>
+
+            <div class="col-4">
+                {# Catégorie de l'article #}
+                {{ form_row(editForm.categorie)}}
+                {# Image de l'article #}
+                {{ form_row(editForm.imageFile)}}
+                {# Date publication de l'article #}
+                {{ form_row(editForm.created_at)}}
+                {# Boutton #}
+                {{ form_row(editForm.poster)}}
+
+            </div>
+        </div>
+
+    {{ form_end(editForm) }}
+
+    
 {% endblock %}

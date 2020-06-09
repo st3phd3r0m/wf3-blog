@@ -4,6 +4,15 @@
 
 {% block body %}
 
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <a href="{{ path('new_post') }}" title="Ajouter un article" class="btn btn-primary mb-3 float-right">Ajouter un article</a>
+
 <table class="table">
     <thead>
         <tr>
@@ -18,11 +27,7 @@
     </thead>
     <tbody>
 
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
+
 
     {% for post in posts %} 
         <tr>
@@ -44,6 +49,8 @@
                 {# Passer l'url de suppression contenant l'id de l'article dans le bouton #}
                 {# et je récupère cette même url au sein de la modal qui s'ouvre #}
                 <button type="button" title="Supprimer l'article" class="btn btn-danger delete-post" data-toggle="modal" data-target="#deleteModal" data-url = "{{ path('delete_Post', { id: post.id }) }}">Supprimer l'article</button>
+
+                <a href="{{ path('read_post', { id: post.id }) }}" title="Consulter l'article" class="btn btn-success">Consulter l'article</a>
             </td>
         </tr>
 

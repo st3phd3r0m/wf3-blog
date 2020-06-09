@@ -21,27 +21,34 @@
 
 {# my-2 my-lg-0 #}
 
-{# {{ form(formComment) }} #}
+            {# Formulaire de recherche #}
+        {# {{ form(formComment) }} #}
             <form class="form-inline ml-auto">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form> 
 
+
+            {# ESPACE UTILISATEUR #}
             <ul class="navbar-nav ml-auto">
                 {% if app.user %}
+                {# Si l'utilisateur est connecté #}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Bonjour {{ app.user.firstname }} !
                     </a>
+                    {# On lui laisse la possibilité de se déconnecter #}
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a>
                     </div>
                 </li>
                 {% else %}
+                {# Si il n'est pas connecté, on l'invite à se connecter... #}
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ path('app_login') }}">Se connecter<span class="sr-only">(current)</span></a>
                 </li>
+                {# ou à s'inscrire dans la bdd #}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_register') }}">S'inscrire</a>
                 </li>

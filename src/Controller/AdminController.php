@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Posts;
 use App\Form\PostType;
+use App\Form\ModifyPostType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,47 @@ class AdminController extends AbstractController
 {
 
     /**
-     * @Route("/admin/edit/post/{id}", name="edit_Post")
+     * @Route("/admin/new/post", name="new_post")
+     * @param Request $request
+     * @return Response
+     */
+    public function newPost(Request $request)
+    {
+        //Nouvel article : instanciation entité Posts
+        $post = new Posts();
+        //Ajout du formulaire
+        //Création du formulaire avec pour parametres :
+        // -Le formulaire genere en ligne de commande
+        // -l'objet $post sélectionné ci-dessus ci-dessus  
+        $form = $this->createForm(PostType::class, $post, [
+            'validation_groups' => ['new']
+        ]);
+        //Manipulation de la requete pour hydration automatique
+        $form->handleRequest($request);
+
+
+        //Si le formulaire est envoyé et celui-ci est valide !
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $post->setUpdatedAt(new \DateTime('now'));
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            //Envoi d'un message de succès
+            $this->addFlash('success', 'L\'article a bien été ajouté.');
+
+            return $this->redirectToRoute('admin'); 
+        }
+
+        return $this->render('admin/new.html.twig', [
+            'editForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/edit/post/{id}", name="edit_Post", requirements={"id"="\d+"})
      * @param int $id
      * @param Request $request
      * @return Response
@@ -34,7 +75,9 @@ class AdminController extends AbstractController
         //Création du formulaire avec pour parametres :
         // -Le formulaire genere en ligne de commande
         // -l'objet $post sélectionné ci-dessus ci-dessus        
-        $form = $this->createForm(PostType::class, $post);
+        $form = $this->createForm(PostType::class, $post, [
+            'validation_groups' => ['update']
+        ]);
         //Manipulation de la requete pour hydration automatique
         $form->handleRequest($request);
 
@@ -42,13 +85,15 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $post->setUpdatedAt(new \DateTime('now'));
-            
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
 
             //Envoi d'un message de succès
             $this->addFlash('success', 'L\'article a bien été mis à jour.');
+
+            return $this->redirectToRoute('admin'); 
         }
 
         return $this->render('admin/edit.html.twig', [
@@ -57,7 +102,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/delete/post/{id}", name="delete_Post")
+     * @Route("/admin/delete/post/{id}", name="delete_Post", requirements={"id"="\d+"})
      * @param int $id
      */
     public function deletePost(int $id)
