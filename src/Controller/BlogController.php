@@ -28,7 +28,7 @@ class BlogController extends AbstractController
     //         //getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
 
     //         //$this->getDoctrine()->getRepository(Posts::class)->findBy(['categorie'=>$id], ['created_at' => 'DESC']),
-            
+
     //         //Le numero de la page, si aucun numero, on force la page 1
     //         $request->query->getInt('page', 1),
     //         //Nombre d'élément par page
@@ -41,16 +41,17 @@ class BlogController extends AbstractController
     // }
 
     /**
-     * @Route("/categorie/{id}", name="read_categorie", requirements={"id"="\d+"})
-     * @param int $id
+     * 
+     * @Route("/categorie/{slug}", name="read_categorie")
+     * @param string $slug
      * @param Request $request
      * @return Response
      */
-    public function pageCategorie(int $id, PaginatorInterface $paginator, Request $request)
+    public function pageCategorie(string $slug, PaginatorInterface $paginator, Request $request)
     {
 
-        $categorie = $this->getDoctrine()->getRepository(Categories::class)->find($id);
-        
+        $categorie = $this->getDoctrine()->getRepository(Categories::class)->findOneBy(['slug' => $slug]);
+
         $posts = $paginator->paginate(
             $categorie->getPosts(),
             //Le numero de la page, si aucun numero, on force la page 1
@@ -60,56 +61,56 @@ class BlogController extends AbstractController
         );
 
         return $this->render('blog/categorie.html.twig', [
-            'categorie'=>$categorie,
-            'posts'=>$posts
-        ]);
-    }
-
-    
-    /**
-     * @Route("/categorie2/{id}", name="read_categorie2", requirements={"id"="\d+"})
-     * @param int $id
-     * @param Request $request
-     * @return Response
-     */
-    public function pageCategorie2(int $id, PaginatorInterface $paginator, Request $request)
-    {
-
-        $categorie = $this->getDoctrine()->getRepository(Categories::class)->find($id);
-
-        // Erreur 404 si aucun article trouvé
-        if (!$categorie) {
-            throw $this->createNotFoundException('La catégorie n\'existe pas.');
-        }
-
-        $posts = $paginator->paginate(
-            //Selectionne toutes les données de la table "posts"
-            //getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
-            $this->getDoctrine()->getRepository(Posts::class)->findBy(['categorie'=>$id], ['created_at' => 'DESC']),
-            //Le numero de la page, si aucun numero, on force la page 1
-            $request->query->getInt('page', 1),
-            //Nombre d'élément par page
-            2
-        );
-
-        return $this->render('blog/categorie2.html.twig', [
-            'categorie'=>$categorie,
-            'posts'=>$posts
+            'categorie' => $categorie,
+            'posts' => $posts
         ]);
     }
 
 
+    /**
+     * Route("/categorie2/{id}", name="read_categorie2", requirements={"id"="\d+"})
+     * param int $id
+     * param Request $request
+     * return Response
+     */
+    // public function pageCategorie2(int $id, PaginatorInterface $paginator, Request $request)
+    // {
+
+    //     $categorie = $this->getDoctrine()->getRepository(Categories::class)->find($id);
+
+    //     // Erreur 404 si aucun article trouvé
+    //     if (!$categorie) {
+    //         throw $this->createNotFoundException('La catégorie n\'existe pas.');
+    //     }
+
+    //     $posts = $paginator->paginate(
+    //         //Selectionne toutes les données de la table "posts"
+    //         //getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
+    //         $this->getDoctrine()->getRepository(Posts::class)->findBy(['categorie' => $id], ['created_at' => 'DESC']),
+    //         //Le numero de la page, si aucun numero, on force la page 1
+    //         $request->query->getInt('page', 1),
+    //         //Nombre d'élément par page
+    //         2
+    //     );
+
+    //     return $this->render('blog/categorie2.html.twig', [
+    //         'categorie' => $categorie,
+    //         'posts' => $posts
+    //     ]);
+    // }
+
 
     /**
-     * @Route("/post/{id}", name="read_post", requirements={"id"="\d+"})
-     * @param int $id
+     * @Route("/post/{slug}", name="read_post")
+     * @param string $slug
      * @param Request $request
      * @return Response
      */
-    public function pageArticle(int $id, Request $request)
+    public function pageArticle(string $slug, Request $request)
     {
+
         //Selectionne 1 donnée de la table "posts" via son Id. getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
-        $post = $this->getDoctrine()->getRepository(Posts::class)->find($id);
+        $post = $this->getDoctrine()->getRepository(Posts::class)->findOneBy(['slug' => $slug]);
 
         // Erreur 404 si aucun article trouvé
         if (!$post) {
@@ -158,6 +159,7 @@ class BlogController extends AbstractController
      */
     public function index(PaginatorInterface $paginator, Request $request)
     {
+
         //Selectionne toutes les données de la table "posts"
         //getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
         // $posts = $this->getDoctrine()->getRepository(Posts::class)->findAll(),
@@ -180,4 +182,22 @@ class BlogController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/results", name="results", methods={"GET"})
+     * @return Response
+     */
+    public function search(Request $request, PaginatorInterface $paginator)
+    {
+        $expr = $request->query->get('search');
+        $posts = $paginator->paginate(
+            $this->getDoctrine()->getRepository(Posts::class)->search($expr),
+            $request->query->getInt('page', 1)/*page number*/,
+            $request->query->getInt('limit', 2)/*limit per page*/
+        );
+
+        return $this->render('blog/index.html.twig',[
+            'posts' => $posts,
+            'expr' => $expr
+        ]);
+    }
 }

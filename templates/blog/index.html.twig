@@ -4,6 +4,13 @@
 
 {% block body %}
 
+{% if expr is defined %} 
+    <div>
+        <p>{{ posts | length }} résultat pour l'expression <i>"{{ expr }}"</i></p>
+        {# posts | length n'est pas bien approprié ici #}
+    </div>
+{% endif %}
+
 <div class="row">
 
     {% for post in posts %} 
@@ -11,7 +18,7 @@
             <h2>{{ post.title }}</h2>
 
             <small>Article créé le {{ post.createdAt | date('d.m.Y') }} - Catégorie : 
-            <a href="{{ path('read_categorie2', { id : post.categorie.id }) }}">{{ post.categorie.name }}</a></small>
+            <a href="{{ path('read_categorie', { slug : post.categorie.slug }) }}">{{ post.categorie.name }}</a></small>
         
             {% if post.image is not empty %}
             <img class="d-block w-75 p-3" src="{{ asset('images/posts/'~ post.image ) }}" alt="{{ post.title }}">
@@ -19,7 +26,7 @@
             
             <p>{{ post.content[:50] }}...</p> 
             {# équivalent à {{ post.content|slice(1, 180) }} #}
-            <a href="{{ path('read_post', { id: post.id }) }}" title="Lire la suite de l'article">Aller à la page de l'article</a>
+            <a href="{{ path('read_post', { slug: post.slug }) }}" title="Lire la suite de l'article">Aller à la page de l'article</a>
         </article>
     {% endfor %}
 

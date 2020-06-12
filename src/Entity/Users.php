@@ -104,6 +104,9 @@ class Users implements UserInterface
 
     public function setRoles(array $roles): self
     {
+        // $roles[] = 'ROLE_USER';
+        $roles = array_unique($roles);
+
         $this->roles = $roles;
 
         return $this;

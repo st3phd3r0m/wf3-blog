@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Posts;
+use App\Form\CategoriesType;
 use App\Form\PostType;
 use App\Form\ModifyPostType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -10,7 +11,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * @IsGranted("ROLE_EDITOR", statusCode=403, message="Accès refusé")
+ */
 class AdminController extends AbstractController
 {
 
@@ -21,6 +26,8 @@ class AdminController extends AbstractController
      */
     public function newPost(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_EDITOR');
+        
         //Nouvel article : instanciation entité Posts
         $post = new Posts();
         //Ajout du formulaire
@@ -30,9 +37,9 @@ class AdminController extends AbstractController
         $form = $this->createForm(PostType::class, $post, [
             'validation_groups' => ['new']
         ]);
+
         //Manipulation de la requete pour hydration automatique
         $form->handleRequest($request);
-
 
         //Si le formulaire est envoyé et celui-ci est valide !
         if ($form->isSubmitted() && $form->isValid()) {
@@ -62,6 +69,8 @@ class AdminController extends AbstractController
      */
     public function editPost(int $id, Request $request)
     {
+
+        $this->denyAccessUnlessGranted('ROLE_EDITOR');
 
         //Selectionne 1 donnée de la table "posts" via son Id. getRepository attend en paramètre, l'entité avec laquelle on souhaite travailler
         $post = $this->getDoctrine()->getRepository(Posts::class)->find($id);
@@ -107,6 +116,7 @@ class AdminController extends AbstractController
      */
     public function deletePost(int $id)
     {
+        $this->denyAccessUnlessGranted('ROLE_EDITOR');
 
         $post = $this->getDoctrine()->getRepository(Posts::class)->find($id);
 
@@ -131,6 +141,7 @@ class AdminController extends AbstractController
      */
     public function index(PaginatorInterface $paginator, Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_EDITOR');
 
         $posts = $paginator->paginate(
             //Selectionne toutes les données de la table "posts"

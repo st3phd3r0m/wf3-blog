@@ -8,14 +8,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 
 /**
  * @ORM\Entity(repositoryClass=PostsRepository::class)
+ * @ORM\Table(indexes={@ORM\Index(name="search", columns={"title", "content"}, flags={"fulltext"})})
  * @Vich\Uploadable
  */
 class Posts
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -64,6 +67,12 @@ class Posts
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;
+
+    /**
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(length=255, unique=true)
+     */
+    private $slug;
 
     public function getId(): ?int
     {
@@ -159,7 +168,7 @@ class Posts
     {
         $this->imageFile = $imageFile;
 
-        if(null !== $imageFile){
+        if (null !== $imageFile) {
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
@@ -188,4 +197,15 @@ class Posts
         return $this;
     }
 
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
 }

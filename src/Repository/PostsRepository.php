@@ -19,6 +19,14 @@ class PostsRepository extends ServiceEntityRepository
         parent::__construct($registry, Posts::class);
     }
 
+    public function search(string $searchterm)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('MATCH_AGAINST(p.title, p.content) AGAINST (:searchterm boolean)>0')
+            ->setParameter('searchterm', $searchterm)
+            ->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Posts[] Returns an array of Posts objects
     //  */

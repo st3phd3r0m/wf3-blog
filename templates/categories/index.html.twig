@@ -1,16 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Categories index{% endblock %}
+{% block title %}Index des categories d'articles{% endblock %}
 
 {% block body %}
-    <h1>Categories index</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <h1>Index des categories d'articles</h1>
+
+    <a class="btn btn-success float-right m-5" href="{{ path('categories_new') }}">Ajouter une catégorie</a>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
+                <th>#</th>
+                <th>Noms des catégories</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -19,17 +28,27 @@
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
                 <td>
-                    <a href="{{ path('categories_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('categories_edit', {'id': category.id}) }}">edit</a>
+                    {# <a class="btn btn-primary" href="{{ path('categories_show', {'id': category.id}) }}">Voir</a> #}
+                    <a class="btn btn-warning" href="{{ path('categories_edit', {'id': category.id}) }}">Modifier</a>
+                    {{ include('categories/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucune catégorie trouvée</td>
             </tr>
         {% endfor %}
+
+            <div class="py-5">
+            {{ knp_pagination_render(categories) }}
+            </div>
+
         </tbody>
     </table>
 
-    <a href="{{ path('categories_new') }}">Create new</a>
+    <div class="py-5">
+    {{ knp_pagination_render(categories) }}
+    </div>
+
+    <a class="btn btn-success float-right m-5" href="{{ path('categories_new') }}">Ajouter une catégorie</a>
 {% endblock %}

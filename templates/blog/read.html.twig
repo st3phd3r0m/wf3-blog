@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon article {{ post.id }}{% endblock %}
+{% block title %}Mon article {{ post.slug }}{% endblock %}
 
 {% block body %}
 
@@ -9,7 +9,7 @@
     {% endfor %}
 
     <h1>{{ post.title }}</h1>
-    <small>Posté le {{ post.createdAt | date('d.m.Y') }}. - Catégorie : <a href="{{ path('read_categorie2', { id : post.categorie.id }) }}">{{ post.categorie.name }}</a></small>
+    <small>Posté le {{ post.createdAt | date('d.m.Y') }}. - Catégorie : <a href="{{ path('read_categorie', { slug : post.categorie.slug }) }}">{{ post.categorie.name }}</a></small>
 
     {% if post.image is not empty %}
     <img class="d-block w-75 p-3" src="{{ asset('images/posts/'~ post.image ) }}" alt="{{ post.title }}">

@@ -4,6 +4,12 @@
 
 {% block body %}
 
+    {% if is_granted('ROLE_EDITOR') %}
+
+    <a class="btn btn-primary mb-5" href="{{ path('admin') }}">Voir la liste des articles</a>
+
+    {% endif %}
+
 {# on est obligé de dispatcher le formulaire pour désactiver les "required" #}
     {{ form_start(editForm, { attr: {'novalidate': 'novalidate'}}) }}
 
@@ -25,6 +31,9 @@
             <div class="col-4">
                 {# Catégorie de l'article #}
                 {{ form_row(editForm.categorie)}}
+
+                <a class="btn btn-primary mb-5" href="{{ path('categories_new') }}">Ajouter une catégorie</a>
+                
                 {# Image de l'article #}
                 {{ form_row(editForm.imageFile)}}
                 {# Date publication de l'article #}

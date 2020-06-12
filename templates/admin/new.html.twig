@@ -3,5 +3,16 @@
 {% block title %}Edition de l'article{% endblock %}
 
 {% block body %}
-    {{ form(editForm) }}
+
+    {% if is_granted('ROLE_EDITOR') %}
+
+        <a class="btn btn-primary mb-5" href="{{ path('admin') }}">Voir la liste des articles</a>
+
+        <a class="btn btn-primary mb-5" href="{{ path('categories_new') }}">Ajouter une catégorie</a>
+
+        {{ form(editForm) }}
+
+    {% endif %}
+
+    
 {% endblock %}
