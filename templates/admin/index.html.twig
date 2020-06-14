@@ -37,7 +37,7 @@
             {# asset('images/posts/'~ post.image )  class="w-100"#}
             {# vich_uploader_asset(post, 'imageFile') #}
             <td>
-                <img class="w-100" src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Image de l'article {{ post.title }}">
+                <img class="w-100" src="{{ vich_uploader_asset(post, 'imageFile') | imagine_filter('miniatures') }}" alt="Image de l'article {{ post.title }}">
             </td>
             <td>{{ post.categorie.name }}</td>    
             <td>{{ post.createdAt| date('d.m.Y') }}</td>
@@ -50,7 +50,8 @@
                 {# et je récupère cette même url au sein de la modal qui s'ouvre #}
                 <button type="button" title="Supprimer l'article" class="btn btn-danger delete-post" data-toggle="modal" data-target="#deleteModal" data-url = "{{ path('delete_Post', { id: post.id }) }}">Supprimer l'article</button>
 
-                <a href="{{ path('read_post', { id: post.id }) }}" title="Consulter l'article" class="btn btn-success">Consulter l'article</a>
+                <a href="{{ path('read_post', { slug: post.slug }) }}" title="Consulter l'article" class="btn btn-success">Consulter l'article</a>
+                
             </td>
         </tr>
 
