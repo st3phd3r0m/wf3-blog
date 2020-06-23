@@ -27,7 +27,7 @@
     </thead>
     <tbody>
 
-
+    {#  #}
 
     {% for post in posts %} 
         <tr>
@@ -51,6 +51,7 @@
                 <button type="button" title="Supprimer l'article" class="btn btn-danger delete-post" data-toggle="modal" data-target="#deleteModal" data-url = "{{ path('delete_Post', { id: post.id }) }}">Supprimer l'article</button>
 
                 <a href="{{ path('read_post', { slug: post.slug }) }}" title="Consulter l'article" class="btn btn-success">Consulter l'article</a>
+                
                 
             </td>
         </tr>
